@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <link href="https://usaskcdn.ca/limestone/stable/css/limestone.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://usaskcdn.ca/limestone/stable/img/favicon.png" rel="shortcut icon" />
+    <!--[if lt IE 9]>
+    <link href="https://usaskcdn.ca/limestone/stable/css/ie.css" rel="stylesheet" type="text/css"/>
+    <script src="https://usaskcdn.ca/limestone/stable/js/ie.js"></script>
+  <![endif]-->
+    <title>404 Document Not Found - University of Saskatchewan</title>
+
+    <base href="https://www.usask.ca//www.usask.ca/bad-link.php" />
+    <style>
+        .uofs-header-logo {
+            border-right: none;
+            padding-left: 4px;
+        }
+        
+        @media screen and (min-width: 768px) {
+            .navbar-right {
+                float: left !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="uofs-header">
+        <a class="sr-only" href="#content">Skip to main content</a>
+        <div class="uofs-header-masthead affix-top" role="banner">
+            <a class="uofs-header-logo" href="https://www.usask.ca/index.php">
+                <img alt="University of Saskatchewan" src="https://www.usask.ca/_images/logos/usask-logo.png" />
+            </a>
+        </div>
+    </header>
+
+    <div class="uofs-page" data-lastmodifiedby="ICT_WS" data-lastpublishedby="imj129">
+        <header class="uofs-page-header">
+            <div class="container-fluid">
+                <h1 class="uofs-page-title">404 Document Not Found</h1>
+            </div>
+        </header>
+
+        <div class="uofs-page-content" id="content" role="main">
+            <section class="uofs-section " id="section-0" style="">
+                <div class="container-fluid">
+                    <div class="uofs-subsection" id="section-0-subsection-0">
+                        <div id="func404location"></div>
+                        <p>The homepage.usask.ca service was retired on November 15, 2020. The content from the site will remain archived until May 15, 2021 before it is permanently removed from the University of Saskatchewan web servers.</p>
+			<p>If you are the owner of this site and you wish to be sent the contents of your homepage site, please contact web@usask.ca for assistance.</p>
+                        <ul>
+                            <li><a href="https://www.usask.ca/" target="_top">University of Saskatchewan Home Page</a></li>
+                            <li><a href="https://www.usask.ca/search/" target="_top">University of Saskatchewan Search</a></li>
+                            <li><a href="https://www.usask.ca/a-z/" target="_top">University of Saskatchewan A-Z</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer class="uofs-footer">
+        <div class="container-fluid">
+            <ul class="list-inline uofs-footer-custom">
+                <li><a href="https://www.usask.ca/a-z">A-Z</a></li>
+                <li><a href="https://www.usask.ca/search">Search</a></li>
+                <li><a href="https://www.usask.ca/maps">Maps</a></li>
+                <li><a href="https://jobs.usask.ca">Jobs</a></li>
+                <li><a href="https://www.usask.ca/contact/">Contact</a></li>
+                <li><a href="https://socialmedia.usask.ca/directory.php">Social Media Directory</a></li>
+            </ul>
+            <ul class="list-inline uofs-footer-social">
+                <li>
+                <a href="https://www.facebook.com/usask" title="Follow on Facebook" data-track="tracked" ><i class="uofs-icon uofs-icon-facebook"></i ><span class="text-hide">Follow on Facebook</span></a>
+                </li>
+                <li>
+                <a href="https://www.twitter.com/usask" title="Follow on Twitter" data-track="tracked" ><i class="uofs-icon uofs-icon-twitter"></i ><span class="text-hide">Follow on Twitter</span></a>
+                </li>
+                <li>
+                <a href="http://www.youtube.com/usask" title="Follow on YouTube" data-track="tracked" ><i class="uofs-icon uofs-icon-youtube"></i ><span class="text-hide">Follow on YouTube</span></a>
+                </li>
+                <li>
+                <a href="http://www.instagram.com/usask" title="Follow on Instagram" data-track="tracked" ><i class="uofs-icon uofs-icon-instagram"></i ><span class="text-hide">Follow on Instagram</span></a>
+                </li>
+                <li>
+                <a href="https://www.linkedin.com/company/university-of-saskatchewan" title="Follow on LinkedIn" data-track="tracked" ><i class="uofs-icon uofs-icon-linkedin"></i ><span class="text-hide">Follow on LinkedIn</span></a>
+                </li>
+                <li>
+                <a href="http://www.flickr.com/photos/usask/sets" title="Follow on Flickr" data-track="tracked" ><i class="uofs-icon uofs-icon-flickr"></i ><span class="text-hide">Follow on Flickr</span></a>
+                </li>
+            </ul>
+            <a class="uofs-footer-logo" href="http://www.usask.ca/">University of Saskatchewan</a>
+            <p class="uofs-copyright">© University of Saskatchewan<br /><a href="http://www.usask.ca/disclaimer.php">Disclaimer</a>|<a href="https://privacy.usask.ca/statement.php">Privacy</a></p>
+        </div>
+    </footer>
+
+    <script crossorigin="anonymous" integrity="sha256-spTpc4lvj4dOkKjrGokIrHkJgNA0xMS98Pw9N7ir9oI=" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript">
+        /* if jQuery won't load from google CDN, load it from Usask CDN    */
+        /* need to use 'usescape' to cooperate with Cascade XML validation */
+        if (typeof jQuery == "undefined") {
+            document.write(
+                unescape(
+                    "%3Cscript src='//usaskcdn.ca/limestone/stable/js/jquery-1.11.0.min.js' type='text/javascript'%3E%3C/script%3E"
+                )
+            );
+        }
+
+    </script>
+    <script src="https://usaskcdn.ca/limestone/stable/js/limestone.min.js"></script>
+    <script type="text/javascript">
+         window.onload = function() {
+            const regex = /^https?::\/\/www(test)?1\.usask\.ca\/test\/404\.php$/
+            const url = window.location.href;
+            if (url != "https://wwwtest1.usask.ca/test/404.php" && url != "https://www1.usask.ca/test/404.php") {
+                const pageNotFoundDiv = document.getElementById("func404location");
+                pageNotFoundDiv.innerHTML = `<p><b>URL:</b> ${url}</p>`;
+            } else {
+                console.log(`match: ${url}`);
+            }
+        };
+    </script>
+</body>
+</html>

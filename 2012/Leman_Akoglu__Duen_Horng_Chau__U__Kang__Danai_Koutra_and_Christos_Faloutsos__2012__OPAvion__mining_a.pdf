@@ -1,0 +1,1803 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Leman Akoglu, Heinz College</title>
+
+
+
+
+   <meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="verify-v1" content="aqd6Oc00OQihICsGLISAo0m/XPDikIXG3qPuhr01yAk=">
+  <link rel="stylesheet" href="jemdoc.css" type="text/css">
+
+
+<script type="text/javascript">var LEO_HIGHLIGHTS_DEBUG =                      false;
+var LEO_HIGHLIGHTS_DEBUG_POS =                  false;
+
+var _leoHighlightsPrevElem = null;
+
+/**
+ * Checks if the passed in class exists
+ * @param c
+ * @return
+ */
+function _leoHighlightsClassExists(c) {
+   return typeof(c) == "function" && typeof(c.prototype) == "object" ? true : false;
+}
+
+/**
+ * Checks if the firebug console is available
+ * @param c
+ * @return
+ */
+function _leoHighlightsFirebugConsoleAvailable(c) {
+   try
+   {
+      if(_leoHighlightsClassExists(_FirebugConsole) &&
+         window.console && console.log &&
+         (console instanceof _FirebugConsole))
+      {
+         return true;
+      }
+   }
+   catch(e){}
+
+   return false;
+}
+
+
+/**
+ * General method used to debug exceptions
+ *
+ * @param location
+ * @param e
+ * @return
+ */
+function _leoHighlightsReportExeception(location,e)
+{
+   try
+   {
+      if(_leoHighlightsFirebugConsoleAvailable() ||LEO_HIGHLIGHTS_DEBUG)
+      {
+         var logString=location+": "+e+"\n\t"+e.name+"\n\t"+
+                       (e.number&0xFFFF)+"\n\t"+e.description;
+         if(_leoHighlightsFirebugConsoleAvailable())
+         {
+            console.error(logString);
+            console.trace();
+         }
+      }
+
+      if(LEO_HIGHLIGHTS_DEBUG)
+         alert(logString);
+   }
+   catch(e){}
+}
+
+/**
+ * This will log a string to the firebug console
+ *
+ * @param str
+ * @return
+ */
+function _leoHighlightsDebugLog(str)
+{
+   try
+   {
+      if(_leoHighlightsFirebugConsoleAvailable())
+      {
+         console.log(typeof(_FirebugConsole)+" "+str);
+      }
+   }
+   catch(e)
+   {
+      _leoHighlightsReportExeception("_leoHighlightsDebugLog() "+str,e);
+   }
+}
+
+/**
+ * This will get an attribute and decode it.
+ *
+ * @param elem
+ * @param id
+ * @return
+ */
+function _leoHighlightsGetAttrib(elem,id)
+{
+   try
+   {
+      var val=elem.getAttribute(id);
+      return decodeURI(val);
+   }
+   catch(e)
+   {
+      _leoHighlightsReportExeception("_leoHighlightsGetAttrib()",e);
+   }
+   return null;
+}
+
+/**
+ * This is a dimensions object
+ *
+ * @param width
+ * @param height
+ * @return
+ */
+function LeoHighlightsDimension(width,height)
+{
+   try
+   {
+   	this.width=width;
+   	this.height=height;
+   	this.toString=function() { return ("("+this.width+","+this.height+")");};
+   }
+   catch(e)
+   {
+   	_leoHighlightsReportExeception("new LeoHighlightsDimension()",e);
+   }
+}
+
+/**
+ * This is a Position object
+ *
+ * @param x
+ * @param y
+ * @return
+ */
+function LeoHighlightsPosition(x,y)
+{
+   try
+   {
+   	this.x=x;
+   	this.y=y;
+   	this.toString=function() { return ("("+this.x+","+this.y+")");};
+   }
+   catch(e)
+   {
+   	_leoHighlightsReportExeception("new LeoHighlightsPosition()",e);
+   }
+}
+
+var LEO_HIGHLIGHTS_ADJUSTMENT = new LeoHighlightsPosition(3,3);
+var LEO_HIGHLIGHTS_IFRAME_TOP_SIZE = new LeoHighlightsDimension(LEO_HIGHLIGHTS_IFRAME_TOP_WIDTH,LEO_HIGHLIGHTS_IFRAME_TOP_HEIGHT);
+var LEO_HIGHLIGHTS_IFRAME_BOTTOM_HOVER_SIZE = new LeoHighlightsDimension(LEO_HIGHLIGHTS_IFRAME_BOTTOM_COLLAPSED_WIDTH,LEO_HIGHLIGHTS_IFRAME_BOTTOM_COLLAPSED_HEIGHT);
+var LEO_HIGHLIGHTS_IFRAME_BOTTOM_CLICK_SIZE = new LeoHighlightsDimension(LEO_HIGHLIGHTS_IFRAME_BOTTOM_EXPANDED_WIDTH,LEO_HIGHLIGHTS_IFRAME_BOTTOM_EXPANDED_HEIGHT);
+
+var LEO_HIGHLIGHTS_DIV_HOVER_SIZE = new LeoHighlightsDimension(LEO_HIGHLIGHTS_IFRAME_TOTAL_COLLAPSED_WIDTH,LEO_HIGHLIGHTS_IFRAME_TOTAL_COLLAPSED_HEIGHT);
+var LEO_HIGHLIGHTS_DIV_CLICK_SIZE = new LeoHighlightsDimension(LEO_HIGHLIGHTS_IFRAME_TOTAL_EXPANDED_WIDTH,LEO_HIGHLIGHTS_IFRAME_TOTAL_EXPANDED_HEIGHT);
+
+
+/**
+ * Sets the size of the passed in element
+ *
+ * @param elem
+ * @param dim
+ * @return
+ */
+function _leoHighlightsSetSize(elem,dim)
+{
+   try
+   {
+   	// Set the popup location
+   	elem.style.width = dim.width + "px";
+   	if(elem.width)
+   		elem.width=dim.width;
+   	elem.style.height  = dim.height + "px";
+   	if(elem.height)
+   		elem.height=dim.height;
+   }
+   catch(e)
+   {
+   	_leoHighlightsReportExeception("_leoHighlightsSetSize()",e);
+   }
+}
+
+/**
+ * This can be used for a simple one argument callback
+ *
+ * @param callName
+ * @param argName
+ * @param argVal
+ * @return
+ */
+function _leoHighlightsSimpleGwCallBack(callName,argName, argVal)
+{
+   try
+   {
+      var gwObj = new Gateway();
+      if(argName)
+      	gwObj.addParam(argName,argVal);
+      gwObj.callName(callName);
+   }
+   catch(e)
+   {
+   	_leoHighlightsReportExeception("_leoHighlightsSimpleGwCallBack() "+callName,e);
+   }
+}
+
+/**
+ * This gets a url argument from the current document.
+ *
+ * @param url
+ * @return
+ */
+function _leoHighlightsGetUrlArg(url, name )
+{
+	  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+	  var regexS = "[\\?&]"+name+"=([^&#]*)";
+	  var regex = new RegExp( regexS );
+	  var results = regex.exec(url);
+	  if( results == null )
+	    return "";
+	  else
+	    return results[1];
+}
+
+
+/**
+ * This allows to redirect the top window to the passed in url
+ *
+ * @param url
+ * @return
+ */
+function _leoHighlightsRedirectTop(url)
+{
+   try
+   {
+   	top.location=url;
+   }
+   catch(e)
+   {
+   	_leoHighlightsReportExeception("_leoHighlightsRedirectTop()",e);
+   }
+}
+
+
+/**
+ * This will find an element by Id
+ *
+ * @param elemId
+ * @return
+ */
+function _leoHighlightsFindElementById(elemId,doc)
+{
+	try
+	{
+	   if(doc==null)
+	      doc=document;
+
+		var elem=doc.getElementById(elemId);
+		if(elem)
+			return elem;
+
+		/* This is the handling for IE */
+		if(doc.all)
+		{
+			elem=doc.all[elemId];
+         if(elem)
+         	return elem;
+
+         for ( var i = (document.all.length-1); i >= 0; i--) {
+         	elem=doc.all[i];
+         	if(elem.id==elemId)
+               return elem;
+         }
+		}
+	}
+   catch(e)
+   {
+   	_leoHighlightsReportExeception("_leoHighlightsFindElementById()",e);
+   }
+	return null;
+}
+
+/**
+ * Get the location of one element relative to a parent reference
+ *
+ * @param ref
+ *           the reference element, this must be a parent of the passed in
+ *           element
+ * @param elem
+ * @return
+ */
+function _leoHighlightsGetLocation(ref, elem) {
+   _leoHighlightsDebugLog("_leoHighlightsGetLocation "+elem.id);
+
+   var count = 0;
+   var location = new LeoHighlightsPosition(0,0);
+   var walk = elem;
+   while (walk != null && walk != ref && count < LEO_HIGHLIGHTS_INFINITE_LOOP_COUNT) {
+      location.x += walk.offsetLeft;
+      location.y += walk.offsetTop;
+      walk = walk.offsetParent;
+      count++;
+   }
+
+   _leoHighlightsDebugLog("Location is: "+elem.id+" - "+location);
+
+   return location;
+}
+
+/**
+ * This is used to update the position of an element as a popup
+ *
+ * @param IFrame
+ * @param anchor
+ * @return
+ */
+function _leoHighlightsUpdatePopupPos(iFrame,anchor)
+{
+   try
+   {
+      // Gets the scrolled location for x and y
+      var scrolledPos=new LeoHighlightsPosition(0,0);
+      if( self.pageYOffset ) {
+         scrolledPos.x = self.pageXOffset;
+         scrolledPos.y = self.pageYOffset;
+      } else if( document.documentElement && document.documentElement.scrollTop ) {
+         scrolledPos.x = document.documentElement.scrollLeft;
+         scrolledPos.y = document.documentElement.scrollTop;
+      } else if( document.body ) {
+         scrolledPos.x = document.body.scrollLeft;
+         scrolledPos.y = document.body.scrollTop;
+      }
+
+      /* Get the total dimensions to see what scroll bars might be active */
+      var totalDim=new LeoHighlightsDimension(0,0)
+      if (document.all && document.documentElement &&
+      	document.documentElement.clientHeight&&document.documentElement.clientWidth)
+      {
+      	totalDim.width = document.documentElement.scrollWidth;
+      	totalDim.height = document.documentElement.scrollHeight;
+      }
+      else if (document.all)
+      { /* This is in IE */
+     	 	totalDim.width = document.body.scrollWidth;
+      	totalDim.height = document.body.scrollHeight;
+      }
+      else
+      {
+      	 totalDim.width = document.width;
+      	 totalDim.height = document.height;
+      }
+
+      // Gets the location of the available screen space
+      var centerDim=new LeoHighlightsDimension(0,0);
+      if(self.innerWidth && self.innerHeight ) {
+         centerDim.width = self.innerWidth-(totalDim.height>self.innerHeight?16:0); // subtracting scroll bar offsets for firefox
+         centerDim.height = self.innerHeight-(totalDim.width>self.innerWidth?16:0);  // subtracting scroll bar offsets for firefox
+      } else if( document.documentElement && document.documentElement.clientHeight ) {
+         centerDim.width = document.documentElement.clientWidth;
+         centerDim.height = document.documentElement.clientHeight;
+      } else if( document.body ) {
+         centerDim.width = document.body.clientWidth;
+         centerDim.height = document.body.clientHeight;
+      }
+
+      // Get the current dimension of the popup element
+      var iFrameDim=new LeoHighlightsDimension(iFrame.offsetWidth,iFrame.offsetHeight)
+      if (iFrameDim.width <= 0)
+      	iFrameDim.width = iFrame.style.width.substring(0, iFrame.style.width.indexOf('px'));
+      if (iFrameDim.height <= 0)
+      	iFrameDim.height = iFrame.style.height.substring(0, iFrame.style.height.indexOf('px'));
+
+      /* Calculate the position, lower right hand corner by default */
+      var position=new LeoHighlightsPosition(0,0);
+      position.x=scrolledPos.x+centerDim.width-iFrameDim.width-LEO_HIGHLIGHTS_ADJUSTMENT.x;
+      position.y=scrolledPos.y+centerDim.height-iFrameDim.height-LEO_HIGHLIGHTS_ADJUSTMENT.y;
+
+      if(anchor!=null)
+      {
+         //centerDim in relation to the anchor element if available
+         var topOrBottom = false;
+         var anchorPos=_leoHighlightsGetLocation(document.body, anchor);
+         var anchorScreenPos = new LeoHighlightsPosition(anchorPos.x-scrolledPos.x,anchorPos.y-scrolledPos.y);
+         var anchorDim=new LeoHighlightsDimension(anchor.offsetWidth,anchor.offsetHeight)
+         if (anchorDim.width <= 0)
+         	anchorDim.width = anchor.style.width.substring(0, anchor.style.width.indexOf('px'));
+         if (anchorDim.height <= 0)
+         	anchorDim.height = anchor.style.height.substring(0, anchor.style.height.indexOf('px'));
+
+         // Check if the popup can be shown above or below the element
+         if (centerDim.height - anchorDim.height - iFrameDim.height - anchorScreenPos.y > 0) {
+         	// Show below, formula above calculates space below open iFrame
+            position.y = anchorPos.y + anchorDim.height;
+            topOrBottom = true;
+         } else if (anchorScreenPos.y - anchorDim.height - iFrameDim.height > 0) {
+         	// Show above, formula above calculates space above open iFrame
+         	position.y = anchorPos.y - iFrameDim.height - anchorDim.height;
+            topOrBottom = true;
+         }
+
+         _leoHighlightsDebugLog("_leoHighlightsUpdatePopupPos() - topOrBottom: "+topOrBottom);
+
+         if (topOrBottom) {
+            // We attempt top attach the window to the element
+         	position.x = anchorPos.x - iFrameDim.width / 2;
+            if (position.x < 0)
+            	position.x = 0;
+            else if (position.x + iFrameDim.width > scrolledPos.x + centerDim.width)
+            	position.x = scrolledPos.x + centerDim.width - iFrameDim.width;
+            _leoHighlightsDebugLog("_leoHighlightsUpdatePopupPos() - topOrBottom: "+position);
+         } else {
+            // Attempt to align on the right or left hand side
+            if (centerDim.width - anchorDim.width - iFrameDim.width - anchorScreenPos.x > 0)
+               position.x = anchorPos.x + anchorDim.width;
+            else if (anchorScreenPos.x - anchorDim.width - iFrameDim.width > 0)
+            	position.x = anchorPos.x - anchorDim.width;
+            else  // default to below
+               position.y = anchorPos.y + anchorDim.height;
+            _leoHighlightsDebugLog("_leoHighlightsUpdatePopupPos() - sideBottom: "+position);
+         }
+      }
+
+
+      /* Make sure that we don't go passed the right hand border */
+      if(position.x+iFrameDim.width>centerDim.width-20)
+      	position.x=centerDim.width-(iFrameDim.width+20);
+
+      // Make sure that we didn't go passed the start
+      if(position.x<0)
+         position.x=0;
+      if(position.y<0)
+      	position.y=0;
+
+      _leoHighlightsDebugLog("Popup info id:       " +iFrame.id+" - "+anchor.id
+                             + "\nscrolled          " + scrolledPos
+                             + "\ncenter/visible    " + centerDim
+                             + "\nanchor (absolute) " + anchorPos
+                             + "\nanchor (screen)   " + anchorScreenPos
+                             + "\nSize (anchor)     " + anchorDim
+                             + "\nSize (popup)      " + iFrameDim
+                             + "\nResult pos        " + position);
+
+      // Set the popup location
+      iFrame.style.left = position.x + "px";
+      iFrame.style.top  = position.y + "px";
+   }
+   catch(e)
+   {
+   	_leoHighlightsReportExeception("_leoHighlightsUpdatePopupPos()",e);
+   }
+}
+
+
+/**
+ * This will show the passed in element as a popup
+ *
+ * @param anchorId
+ * @param size
+ *
+ * @return
+ */
+function _leoHighlightsShowPopup(anchorId,size)
+{
+   try
+   {
+   	var popup=new LeoHighlightsPopup(anchorId,size);
+   	popup.show();
+   }
+   catch(e)
+   {
+   	_leoHighlightsReportExeception("_leoHighlightsShowPopup()",e);
+   }
+}
+
+
+/**
+ * This will transform the passed in url to a rover url
+ *
+ * @param url
+ * @return
+ */
+function _leoHighlightsGetRoverUrl(url)
+{
+	var rover=LEO_HIGHLIGHTS_ROVER_TAG;
+	var roverUrl="http://rover.ebay.com/rover/1/"+rover+"/4?&mpre="+encodeURI(url);
+
+	return roverUrl;
+}
+
+/**
+ * Sets the size of the bottom windown part
+ *
+ * @param size
+ * @return
+ */
+function _leoHighlightsSetBottomSize(size,clickId)
+{
+   /* Get the elements */
+   var iFrameBottom=_leoHighlightsFindElementById(LEO_HIGHLIGHTS_IFRAME_BOTTOM_ID);
+   var iFrameDiv=_leoHighlightsFindElementById(LEO_HIGHLIGHTS_IFRAME_DIV_ID);
+
+   /* Figure out the correct sizes */
+   var iFrameBottomSize=(size==1)?LEO_HIGHLIGHTS_IFRAME_BOTTOM_CLICK_SIZE:LEO_HIGHLIGHTS_IFRAME_BOTTOM_HOVER_SIZE;
+   var divSize=(size==1)?LEO_HIGHLIGHTS_DIV_CLICK_SIZE:LEO_HIGHLIGHTS_DIV_HOVER_SIZE;
+
+   /* Refresh the iFrame's url, by removing the size arg and adding it again */
+   leoHighlightsUpdateUrl(iFrameBottom,size,clickId);
+
+   /* Clear the hover flag, if the user shows this at full size */
+   _leoHighlightsPrevElem.hover=size==1?false:true;
+
+   _leoHighlightsSetSize(iFrameBottom,iFrameBottomSize);
+   _leoHighlightsSetSize(iFrameDiv,divSize);
+}
+
+
+/**
+ * Class for a Popup
+ *
+ * @param anchorId
+ * @param size
+ *
+ * @return
+ */
+function LeoHighlightsPopup(anchorId,size)
+{
+   try
+   {
+      _leoHighlightsDebugLog("LeoHighlightsPopup() ");
+
+   	this.anchorId=anchorId;
+   	this.anchor=_leoHighlightsFindElementById(this.anchorId);
+   	this.topIframe=_leoHighlightsFindElementById(LEO_HIGHLIGHTS_IFRAME_TOP_ID);
+      this.bottomIframe=_leoHighlightsFindElementById(LEO_HIGHLIGHTS_IFRAME_BOTTOM_ID);
+   	this.iFrameDiv=_leoHighlightsFindElementById(LEO_HIGHLIGHTS_IFRAME_DIV_ID);
+
+   	this.topIframe.src=unescape(this.anchor.getAttribute('leoHighlights_url_top'));;
+      this.bottomIframe.src=unescape(this.anchor.getAttribute('leoHighlights_url_bottom'));;
+
+      _leoHighlightsDebugLog("1) LeoHighlightsPopup() ("+this.topIframe.style.top+", "+this.topIframe.style.left+")");
+      _leoHighlightsDebugLog("2) LeoHighlightsPopup() ("+this.bottomIframe.style.top+", "+this.bottomIframe.style.left+")");
+
+   	leoHighlightsSetSize(size);
+
+   	this.updatePos=function() { _leoHighlightsUpdatePopupPos(this.iFrameDiv,this.anchor)};
+      this.show=function() {
+            this.updatePos();
+            this.iFrameDiv.style.visibility = "visible";
+            this.iFrameDiv.style.display = "block";
+            this.updatePos();
+
+            _leoHighlightsDebugLog("3) LeoHighlightsPopup() ("+this.topIframe.style.top+", "+this.topIframe.style.left+")");
+            _leoHighlightsDebugLog("4) LeoHighlightsPopup() ("+this.bottomIframe.style.top+", "+this.bottomIframe.style.left+")");
+      }
+   	this.scroll=function() { this.updatePos();};
+   }
+   catch(e)
+   {
+   	_leoHighlightsReportExeception("new LeoHighlightsPopup()",e);
+   }
+}
+
+/**
+ * updates the url for the iFrame
+ *
+ * @param iFrame
+ * @param size
+ * @param clickId
+ * @return
+ */
+function leoHighlightsUpdateUrl(iFrame,size,clickId,destUrl)
+{
+   try
+   {
+      _leoHighlightsDebugLog("leoHighlightsUpdateUrl() "+destUrl);
+      var url=iFrame.src;
+      var idx=url.indexOf("&size=");
+      if(idx>=0)
+         url=url.substring(0,idx);
+
+//      size=1;
+      _leoHighlightsDebugLog("leoHighlightsUpdateUrl() size="+size+"  "+url);
+
+
+      if(size!=null)
+         url+=("&size="+size);
+      if(clickId!=null)
+         url+=("&clickId="+clickId);
+      if(destUrl!=null)
+         url+=("&url="+destUrl);
+
+      _leoHighlightsDebugLog("leoHighlightsUpdateUrl() "+url);
+
+      iFrame.src=url;
+   }
+   catch(e)
+   {
+      _leoHighlightsReportExeception("leoHighlightsUpdateUrl()",e);
+   }
+}
+
+
+
+/**
+*
+* This can be used to close an iframe
+*
+* @param id
+* @return
+*/
+function leoHighlightsSetSize(size,clickId)
+{
+	try
+	{
+		/* Get the element */
+  		var iFrameTop=_leoHighlightsFindElementById(LEO_HIGHLIGHTS_IFRAME_TOP_ID);
+
+  		/* Figure out the correct sizes */
+  		var iFrameTopSize=LEO_HIGHLIGHTS_IFRAME_TOP_SIZE;
+
+  		/* Refresh the iFrame's url, by removing the size arg and adding it again */
+  		leoHighlightsUpdateUrl(iFrameTop,size,clickId);
+
+  		_leoHighlightsSetSize(iFrameTop,iFrameTopSize);
+      _leoHighlightsSetBottomSize(size,clickId);
+
+      /* Clear the hover flag, if the user shows this at full size */
+      if(size==1&&_leoHighlightsPrevElem)
+         _leoHighlightsPrevElem.hover=false;
+	}
+	catch(e)
+	{
+		_leoHighlightsReportExeception("leoHighlightsSetSize()",e);
+	}
+}
+
+/**
+ * Start the popup a little bit delayed.
+ * Somehow IE needs some time to find the element by id.
+ *
+ * @param anchorId
+ * @param size
+ *
+ * @return
+ */
+function leoHighlightsShowPopup(anchorId,size)
+{
+   try
+   {
+  		var elem=_leoHighlightsFindElementById(anchorId);
+  		if(_leoHighlightsPrevElem&&(_leoHighlightsPrevElem!=elem))
+  			_leoHighlightsPrevElem.shown=false;
+  		elem.shown=true;
+		_leoHighlightsPrevElem=elem;
+
+		_leoHighlightsDebugLog("leoHighlightsShowPopup() "+_leoHighlightsPrevElem);
+
+   	/* FF needs to find the element first */
+   	_leoHighlightsFindElementById(anchorId);
+
+   	setTimeout("_leoHighlightsShowPopup(\'"+anchorId+"\',\'"+size+"\');",10);
+   }
+   catch(e)
+   {
+   	_leoHighlightsReportExeception("leoHighlightsShowPopup()",e);
+   }
+}
+
+/**
+*
+* This can be used to close an iframe
+*
+* @param id
+* @return
+*/
+function leoHighlightsHideElem(id)
+{
+	try
+	{
+		/* Get the appropriate sizes */
+  		var elem=_leoHighlightsFindElementById(id);
+  		if(elem)
+  			elem.style.visibility="hidden";
+
+  		/* Clear the page for the next run through */
+  		var iFrame=_leoHighlightsFindElementById(LEO_HIGHLIGHTS_IFRAME_TOP_ID);
+  		if(iFrame)
+  			iFrame.src="about:blank";
+      var iFrame=_leoHighlightsFindElementById(LEO_HIGHLIGHTS_IFRAME_BOTTOM_ID);
+      if(iFrame)
+         iFrame.src="about:blank";
+
+
+  		if(_leoHighlightsPrevElem)
+  		{
+  			_leoHighlightsPrevElem.shown=false;
+  			_leoHighlightsPrevElem=null;
+  		}
+	}
+	catch(e)
+	{
+		_leoHighlightsReportExeception("leoHighlightsHideElem()",e);
+	}
+}
+
+/**
+*
+* This can be used to close an iframe.
+* Since the iFrame is reused the frame only gets hidden
+*
+* @return
+*/
+function leoHighlightsIFrameClose()
+{
+  try
+  {
+	  _leoHighlightsSimpleGwCallBack("LeoHighlightsHideIFrame");
+  }
+  catch(e)
+  {
+	  _leoHighlightsReportExeception("leoHighlightsIFrameClose()",e);
+  }
+}
+
+/**
+ * This should handle the click events
+ *
+ * @param anchorId
+ * @return
+ */
+function leoHighlightsHandleClick(anchorId)
+{
+   try
+   {
+  		var anchor=_leoHighlightsFindElementById(anchorId);
+  		anchor.hover=false;
+  		if(anchor.startTimer)
+  			clearTimeout(anchor.startTimer);
+
+      /* Report the click event */
+      leoHighlightsReportEvent("clicked", window.document.domain,
+            _leoHighlightsGetAttrib(anchor,'leohighlights_keywords'),null,
+            _leoHighlightsGetAttrib(anchor,'leohighlights_accept'),
+            _leoHighlightsGetAttrib(anchor,'leohighlights_reject'));
+
+   	leoHighlightsShowPopup(anchorId,1);
+   	return false;
+   }
+   catch(e)
+   {
+   	_leoHighlightsReportExeception("leoHighlightsHandleClick()",e);
+   }
+}
+
+/**
+ * This should handle the hover events
+ *
+ * @param anchorId
+ * @return
+ */
+function leoHighlightsHandleHover(anchorId)
+{
+   try
+   {
+  		var anchor=_leoHighlightsFindElementById(anchorId);
+  		anchor.hover=true;
+
+      /* Report the hover event */
+      leoHighlightsReportEvent("hovered", window.document.domain,
+            _leoHighlightsGetAttrib(anchor,'leohighlights_keywords'),null,
+            _leoHighlightsGetAttrib(anchor,'leohighlights_accept'),
+            _leoHighlightsGetAttrib(anchor,'leohighlights_reject'));
+
+   	leoHighlightsShowPopup(anchorId,0);
+   	return false;
+   }
+   catch(e)
+   {
+   	_leoHighlightsReportExeception("leoHighlightsHandleHover()",e);
+   }
+}
+
+/**
+ * This will handle the mouse over setup timers for the appropriate timers
+ *
+ * @param id
+ * @return
+ */
+function leoHighlightsHandleMouseOver(id)
+{
+	try
+	{
+		var anchor=_leoHighlightsFindElementById(id);
+
+		/* Clear the end timer if required */
+		if(anchor.endTimer)
+			clearTimeout(anchor.endTimer);
+		anchor.endTimer=null;
+
+		anchor.style.background=LEO_HIGHLIGHTS_BACKGROUND_STYLE_HOVER;
+
+		/* The element is already showing we are done */
+		if(anchor.shown)
+			return;
+
+		/* Setup the start timer if required */
+		anchor.startTimer=setTimeout(function(){
+			leoHighlightsHandleHover(anchor.id);
+			anchor.hover=true;
+			},
+			LEO_HIGHLIGHTS_SHOW_DELAY_MS);
+	}
+	catch(e)
+	{
+		_leoHighlightsReportExeception("leoHighlightsHandleMouseOver()",e);
+	}
+}
+
+/**
+ * This will handle the mouse over setup timers for the appropriate timers
+ *
+ * @param id
+ * @return
+ */
+function leoHighlightsHandleMouseOut(id)
+{
+	try
+	{
+		var anchor=_leoHighlightsFindElementById(id);
+
+		/* Clear the start timer if required */
+		if(anchor.startTimer)
+			clearTimeout(anchor.startTimer);
+		anchor.startTimer=null;
+
+		anchor.style.background=LEO_HIGHLIGHTS_BACKGROUND_STYLE_DEFAULT;
+		if(!anchor.shown||!anchor.hover)
+			return;
+
+		/* Setup the start timer if required */
+		anchor.endTimer=setTimeout(function(){
+			leoHighlightsHideElem(LEO_HIGHLIGHTS_IFRAME_DIV_ID);
+			anchor.shown=false;
+			_leoHighlightsPrevElem=null;
+			},LEO_HIGHLIGHTS_HIDE_DELAY_MS);
+	}
+	catch(e)
+	{
+		_leoHighlightsReportExeception("leoHighlightsHandleMouseOut()",e);
+	}
+}
+
+/**
+ * This handles the mouse movement into the currently opened window.
+ * Just clear the close timer
+ *
+ * @return
+ */
+function leoHighlightsHandleIFrameMouseOver()
+{
+	try
+	{
+		if(_leoHighlightsPrevElem&&_leoHighlightsPrevElem.endTimer)
+			clearTimeout(_leoHighlightsPrevElem.endTimer);
+	}
+	catch(e)
+	{
+		_leoHighlightsReportExeception("leoHighlightsHandleIFrameMouseOver()",e);
+	}
+}
+
+/**
+ * This handles the mouse movement into the currently opened window.
+ * Just clear the close timer
+ *
+ * @param id
+ * @return
+ */
+function leoHighlightsHandleIFrameMouseOut()
+{
+	try
+	{
+		if(_leoHighlightsPrevElem)
+			leoHighlightsHandleMouseOut(_leoHighlightsPrevElem.id);
+	}
+	catch(e)
+	{
+		_leoHighlightsReportExeception("leoHighlightsHandleIFrameMouseOut()",e);
+	}
+}
+/**
+ * This is a method is used to make the javascript within IE runnable
+ */
+var leoHighlightsRanUpdateDivs=false;
+function leoHighlightsUpdateDivs()
+{
+	try
+	{
+		/* Check if this is an IE browser and if divs have been updated already */
+		if(document.all&&!leoHighlightsRanUpdateDivs)
+		{
+			leoHighlightsRanUpdateDivs=true; // Set early to prevent running twice
+			for(var i=0;i<LEO_HIGHLIGHTS_MAX_HIGHLIGHTS;i++)
+			{
+				var id="leoHighlights_Underline_"+i;
+				var elem=_leoHighlightsFindElementById(id);
+				if(elem==null)
+					break;
+
+				if(!elem.leoChanged)
+				{
+					elem.leoChanged=true;
+
+					/* This will make javaScript runnable */
+					elem.outerHTML=elem.outerHTML;
+				}
+			}
+		}
+	}
+	catch(e)
+	{
+		_leoHighlightsReportExeception("leoHighlightsUpdateDivs()",e);
+	}
+}
+
+if(document.all)
+	setTimeout(leoHighlightsUpdateDivs,200);
+
+
+/**
+ * This is used to report events to the plugin
+ * @param key
+ * @param domain
+ * @param keywords
+ * @param vendorId
+ * @param accept
+ * @param reject
+ * @return
+ */
+function leoHighlightsReportEvent(key, domain,keywords,vendorId,accept,reject)
+{
+   try
+   {
+      var gwObj = new Gateway();
+      gwObj.addParam("key",key);
+      if(domain!=null)
+         gwObj.addParam("domain",domain);
+      if(keywords!=null)
+         gwObj.addParam("keywords",keywords);
+      if(vendorId!=null)
+         gwObj.addParam("vendorId",vendorId);
+      if(accept!=null)
+         gwObj.addParam("accept",accept);
+      if(reject!=null)
+         gwObj.addParam("reject",reject);
+
+      gwObj.callName("LeoHighlightsEvent");
+   }
+   catch(e)
+   {
+      _leoHighlightsReportExeception("leoHighlights()",e);
+   }
+}
+
+/**
+ * This will expand or collapse the window base on it prior state
+ *
+ * @return
+ */
+function leoHighlightsToggleSize(clickId)
+{
+   try
+   {
+      _leoHighlightsDebugLog("leoHighlightsToggleSize() "+_leoHighlightsPrevElem);
+      /* Get the hover flag and change the status */
+      var size=_leoHighlightsPrevElem.hover?1:0;
+      _leoHighlightsSetBottomSize(size,clickId);
+   }
+   catch(e)
+   {
+      _leoHighlightsReportExeception("leoHighlightsToggleSize()",e);
+   }
+}
+
+/**
+ * Call into the kvm that will then do a callback into the top window
+ * The top window will then call leoH
+ *
+ * @return
+ */
+function leoHighlightsSetSecondaryWindowUrl(url, customerId, phraseId)
+{
+   try
+   {
+      _leoHighlightsDebugLog("leoHighlightsSetSecondaryWindowUrl() "+url);
+      var gwObj = new Gateway();
+      gwObj.addParam("url", url);
+      gwObj.addParam("phraseId", phraseId);
+      gwObj.addParam("customerId", customerId);
+      gwObj.callName("LeoHighlightsSetSecondaryWindowUrl");
+   }
+   catch(e)
+   {
+      _leoHighlightsReportExeception("leoHighlightsSetSecondaryWindowUrl()",e);
+   }
+}
+
+/**
+ * Call into the kvm that will then do a callback into the top window
+ * The top window will then call leoH
+ *
+ * @return
+ */
+function leoHighlightsSetSecondaryWindowUrlCallback(url, customerId, phraseId)
+{
+   try
+   {
+      _leoHighlightsDebugLog("leoHighlightsSetSecondaryWindowUrlCallback() "+url);
+
+      /* Clear the hover flag, if the user shows this at full size */
+      var size=_leoHighlightsPrevElem.hover?0:1;
+      _leoHighlightsDebugLog("leoHighlightsSetSecondaryWindowUrlCallback() "+_leoHighlightsPrevElem+" -- "+_leoHighlightsPrevElem.hover);
+
+      /* Get the elements */
+      var iFrameBottom=_leoHighlightsFindElementById(LEO_HIGHLIGHTS_IFRAME_BOTTOM_ID);
+      leoHighlightsUpdateUrl(iFrameBottom,size,null,url);
+
+      _leoHighlightsDebugLog("leoHighlightsSetSecondaryWindowUrlCallback() "+url);
+   }
+   catch(e)
+   {
+      _leoHighlightsReportExeception("leoHighlightsSetSecondaryWindowUrlCallback()",e);
+   }
+}
+
+/**
+ * This will set the text to the Top
+ *
+ * @param txt
+ * @return
+ */
+function leoHighlightsSetExpandTxt(txt)
+{
+   try
+   {
+      var topIFrame = _leoHighlightsFindElementById(LEO_HIGHLIGHTS_IFRAME_TOP_ID);
+      if(topIFrame==null)
+         return;
+
+      /* Get the current url */
+      var url=topIFrame.src;
+      if(url==null)
+         return;
+
+      /* Extract the previous hash if present */
+      var idx=-1;
+      if((idx=url.indexOf('#'))>0)
+         url=url.substring(0,idx);
+
+      /* Append the text to the end */
+      url+="#"+encodeURI(txt);
+
+      /* Set the iframe with the new url that contains the hash tag */
+      topIFrame.src=url;
+   }
+   catch(e)
+   {
+      _leoHighlightsReportExeception("leoHighlightsSetExpandTxt()",e);
+   }
+}
+
+/*----------------------------------------------------------------------*/
+/* Methods provided to the highlight providers...                       */
+/*----------------------------------------------------------------------*/
+
+/**
+ * This will set the expand text for the Top window
+ */
+function leoHL_SetExpandTxt(txt)
+{
+   try
+   {
+      _leoHighlightsDebugLog("leoHL_SetExpandTxt() "+txt);
+      _leoHighlightsSimpleGwCallBack("LeoHighlightsSetExpandTxt","expandTxt",txt);
+   }
+   catch(e)
+   {
+      _leoHighlightsReportExeception("leoHL_SetExpandTxt()",e);
+   }
+}
+
+/**
+ * This will redirect the top window to the passed in url
+ *
+ * @param url
+ * @param parentId
+ * @return
+ */
+function leoHL_RedirectTop(url,parentId)
+{
+   try
+   {
+      try{
+         var domain=_leoHighlightsGetUrlArg(window.document.URL,"domain")
+         var keywords=_leoHighlightsGetUrlArg(window.document.URL,"keywords")
+         var vendorId=_leoHighlightsGetUrlArg(window.document.URL,"vendorId")
+      leoHighlightsReportEvent("clickthrough", domain,keywords, vendorId);
+      }catch(e){
+         _leoHighlightsReportExeception("leoHL_RedirectTop()",e);
+      }
+
+   	_leoHighlightsRedirectTop(url);
+   }
+   catch(e)
+   {
+   	_leoHighlightsReportExeception("leoHL_RedirectTop()",e);
+   }
+}
+
+/**
+ * This will redirect the top window to the passed in url
+ *
+ * @param url
+ * @param parentId
+ * @return
+ */
+function LeoHL_RedirectTop(url,parentId)
+{
+   leoHL_RedirectTop(url,parentId);
+}
+
+/**
+ * This will redirect the top window to the passed in url
+ *
+ * @param url
+ * @param parentId
+ * @return
+ */
+function leoHL_RedirectTopAd(url,parentId)
+{
+   try
+   {
+      try{
+         var domain=_leoHighlightsGetUrlArg(window.document.URL,"domain")
+         var keywords=_leoHighlightsGetUrlArg(window.document.URL,"keywords")
+         var vendorId=_leoHighlightsGetUrlArg(window.document.URL,"vendorId")
+      leoHighlightsReportEvent("advertisement.click", domain,keywords, vendorId);
+      }catch(e){
+         _leoHighlightsReportExeception("leoHL_RedirectTopAd()",e);
+      }
+
+      _leoHighlightsRedirectTop(url);
+   }
+   catch(e)
+   {
+      _leoHighlightsReportExeception("leoHL_RedirectTopAd()",e);
+   }
+}
+
+
+/**
+ * This will set the size of the iframe
+ *
+ * @param url
+ * @param parentId
+ *
+ * @return
+ */
+function leoHl_setSize(size,url)
+{
+   try
+   {
+   	/* Get the clickId */
+   	var clickId=_leoHighlightsGetUrlArg( url,"clickId")
+
+      var gwObj = new Gateway();
+      gwObj.addParam("size",size);
+      if(clickId)
+         gwObj.addParam("clickId",clickId+"_blah");
+      gwObj.callName("LeoHighlightsSetSize");
+   }
+   catch(e)
+   {
+   	_leoHighlightsReportExeception("leoHl_setSize()",e);
+   }
+}
+
+/**
+ * This will toggle the size of the window
+ *
+ * @return
+ */
+function leoHl_ToggleSize()
+{
+   try
+   {
+      var gwObj = new Gateway();
+      gwObj.callName("LeoHighlightsToggleSize");
+   }
+   catch(e)
+   {
+      _leoHighlightsReportExeception("leoHl_ToggleSize()",e);
+   }
+}
+
+</script><script id="gwScript" type="text/javascript">                        function gwCall(method, argStr)
+      {
+         var gwProxy = window.document.getElementById('gwProxy');
+         if (gwProxy)
+         {
+            gwProxy.setAttribute('gwMethod', method);
+            gwProxy.setAttribute('gwArgStr', argStr);
+            var e = document.createEvent('MouseEvents');
+            e.initEvent('click',true,true);
+            gwProxy.dispatchEvent(e);
+         }
+      }
+
+      function jsCall()
+      {
+         var jsProxy = document.getElementById('jsProxy');
+         if (jsProxy)
+         {
+            var jsCode = jsProxy.getAttribute('jsCode');
+            eval(jsCode);
+         }
+      }
+
+      function Gateway()
+      {
+         var _P4r4m5_ = {};
+         this.addParam = function(name,value)
+         {
+            _P4r4m5_[escape(name)] = escape(value);
+         }
+
+         this.callName = function(callName)
+         {
+            var paramStr = '';
+            for (name in _P4r4m5_)
+            {
+               paramStr = paramStr+
+                          ((paramStr == '') ? '' : '&')+
+                          name+'='+_P4r4m5_[name];
+            }
+            gwCall(callName, paramStr);
+         }
+      }
+
+   function showIFrame(name, url)
+      {
+         frames[name].location.href = url;
+      }
+
+      function createSrcScriptElement(srcPath)
+      {
+         var js = document.createElement('script');
+         js.setAttribute('type', 'text/javascript');
+         js.setAttribute('src', srcPath);
+         document.getElementsByTagName('head')[0].appendChild(js);
+      }
+
+      function createInlineScriptElement(escapedJsCode)
+      {
+         try{
+            var js;
+            if(document.standardCreateElement)
+               js = document.standardCreateElement('script');
+            else
+               js = document.createElement('script');
+            js.setAttribute('type', 'text/javascript');
+            js.text = unescape(escapedJsCode);
+            document.getElementsByTagName('head')[0].appendChild(js);
+         }
+         catch(e){
+            //alert(document.createElement);
+            //alert('ERROR: createInlineScriptElement(): '+e);
+         }
+      }
+
+      function invokeInGuiThread(callName, argPtr)
+      {
+         var gwObj = new Gateway();
+         gwObj.addParam('argPtr',argPtr);
+         gwObj.callName(callName);
+      }
+</script>
+
+
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />`
+</head><body>
+
+
+
+
+<div id="wholepage">
+<div id="layout-content">
+<div id="toptitle">
+<h4>   </h4>
+</div>
+
+<div class="centerdiv">
+
+<div class="topbar">
+
+<a href="bio.html" title="BIO"><img style="position: absolute; left: 12px; top: 44px;" src="images/LemanAkoglu.jpeg" border="0" height="190" width="145"></a>
+
+<a href="http://cmu.edu" target="_blank"><img style="position: absolute; left: 725px; top: 54px;" src="images/cmu-seal-white.png" id="leman" border="0" height="165" width="165"></a>
+<p></p><div class="myname" style="position: absolute; left: 180px; top: 54px;">Leman Akoglu  <br></div>
+<br><p style="position: absolute; left: 180px; top: 105px;">Dean's Associate Professor of Information Systems</p><br>
+<a href="http://heinz.cmu.edu/index.aspx" target="_blank"><img style="position: absolute; left: 175px; top: 140px;" src="images/heinzcmulogo.png" id="leman" border="0" height="75" width="270"></a><br><br>
+
+<!--<p style="position: absolute; left: 180px; top: 129px;">H. John Heinz III College</p>
+<br>
+<p style="position: absolute; left: 180px; top: 150px;">Carnegie Mellon University</p><br> -->
+<p style="position: absolute; left: 487px; top: 137px;"><img src="images/email2.png" height="23" width="220" ></p>
+
+<p style="position: absolute; left: 493px; top: 160px;">2118C Hamburg Hall</p>
+<p style="position: absolute; left: 493px; top: 182px;">412-268-3043</p>
+
+<br></br> <!--<a href="index.html#contact" title="CONTACT" style="position: absolute; left: 180px;font-size: 20pt Helvetica; color: rgb(255,255,255)">[contact]</a>-->
+</div>
+
+<div class="menu">
+<a href="index.html">Home</a>
+<a href="pubs.html">Publications</a>
+<a href="research.html">Research</a>
+<a href="teaching.html">Teaching</a>
+<!--<a href="activities.html">Activities</a>-->
+<a href="misc.html">Service/Misc</a>
+<a href="docs/LemanAkogluCV.pdf">CV<img alt="pdf-file-icon" src="images/pdficonblack.jpg"></a>
+</div> <!-- end menu -->
+
+
+
+<h2>About me</h2>
+
+
+
+<p>
+I am the Heinz College Dean's Associate Professor at <a href="http://www.cmu.edu" target="_blank">Carnegie Mellon University</a>'s <a href="http://www.heinz.cmu.edu/" target="_blank">Heinz College</a> of Information Systems and Public Policy. I also hold courtesy appointments at the <a href="http://www.ml.cmu.edu/" target="_blank">Machine Learning Department (MLD)</a> and the <a href="http://www.cs.cmu.edu">Computer Science Department (CSD)</a> of <a href="https://www.scs.cmu.edu/" target="_blank">School of Computer Science (SCS)</a>.
+<br><br>
+
+At Heinz, I
+direct the <a href="http://datalab.heinz.cmu.edu/" target="_blank">Data Analytics Techniques Algorithms (DATA) Lab</a>.
+
+ <!--
+<div style="font-size:16px; width:800px; background-color:#FADBD8; padding:1px;">
+    <ul>
+       
+        
+        <li><span style= "font-weight: bold;"></span>
+            The post doc position in my group has now been filled and applications are closed.
+            
+            I am <b><font color="#D70303">looking to hire a post-doc</font></b> for a 1-year funded project on studying accounting/transaction networks, subject areas including anomaly detection, graph summarization and role discovery.
+        </li>
+        <li>Start date is Jul or Aug 1st, 2020.</li>
+        <li>Please contact me (See email above) with a brief summary of background and CV; note that a written reference from PhD advisor will also be requested upon mutual interest.</li>
+             
+    </ul>
+             
+</div>
+-->
+
+<br>
+
+My research interests are in
+data mining, knowledge discovery, graph mining, machine learning, and online media analysis, with specific
+focus on identifying and characterizing patterns and anomalies in large-scale, time-varying, multi-modal data sources
+through scalable computational methods. <b>Prospective students</b> with similar interests, please see <a href="research.html#apply">here</a>.
+<br><br>
+
+<h3>Background</h3>
+<ul>
+<li>Ph.D in Computer Science, <a href="http://www.cmu.edu" target="_blank"> Carnegie Mellon University</a>, 2012 &nbsp; [<a href="thesis/thesis.html">thesis</a>]
+</li>
+<li>
+B.S. in Computer Science, <a href="http://www.bilkent.edu.tr/index.html" target="_blank"> Bilkent University</a>, 2003-2007
+</li>
+</ul>
+A short bio can be found <a href="bio.html">here</a>.<br>
+
+<!--<div style="font-size:16px; width:870px; background-color:#FCFCAD; padding:1px;">
+Heinz College has <font color="red">multiple open postdoctoral positions</font> in <b>statistics, machine learning, data science, management science, and information systems</b> broadly construed. See details and apply at <a href="https://apply.interfolio.com/48218">this link</a>.
+</div>-->
+
+
+<h2><font color="#D70303">News: </font></h2>
+
+<div class="torightc" style="height:302px;overflow:auto;">
+<ul>
+<li> <b>Dec, 2020</b> Joint work with Neil Shah @Snap on <a href="pubs.html">fairness-aware outlier detection</a> is now on  <a href="https://arxiv.org/abs/2012.03063">arXiv</a>!</li>
+    <br>
+
+
+ <li> <b>Dec, 2020</b> <a href="https://complexnetworks.org/keynote-speakers/">Keynote speaker</a> at the 9th International Conference on  <a href="https://www.complexnetworks.org/">Complex Networks 2020</a> (Virtual), December 1-3. Slides are <a href="docs/20-ComplexNets-Keynote.pdf">here</a>. A similar version of the talk is on <a href="https://www.youtube.com/watch?v=r1Sg3H4_mO4">Youtube</a>. </li>
+    <br>
+
+
+<li> <b>Nov, 2020</b> OddBall (authored w/ Mary and Christos) received <a href="https://pakdd.org/most-influential-awards/">The Most Influential Paper Award</a> at PAKDD 2020!</li>
+    <br>
+
+
+   <li> <b>Sep, 2020</b> Joint work with U Michigan on <a href="pubs.html">learning with graph neural networks under heterophily</a> to appear at <a href="https://nips.cc/Conferences/2020/">NeurIPS 2020</a>!</li>
+    <br>
+
+
+    <li> <b>May, 2020</b> Our work on <a href="pubs.html">spotting emerging rare classes continually</a> is to appear at <a href="https://dl.acm.org/journal/tkdd">ACM TKDD Journal</a>!</li>
+    <br>
+
+    
+    <li> <b>Apr, 2020</b> Couple of talks,  <i>Human-in-the-loop Anomaly Mining</i> and <i>Tackling Structure And Oversmoothing for Graph-based SSL</i>, at the <a href="http://meetings2.informs.org/wordpress/nationalharbor2020/">INFORMS Annual Meeting 2020</a>.</li>
+    <br>
+    
+    <li> <b>Apr, 2020</b> I am co-organizing the 3rd <a href="https://sites.google.com/view/kdd-mlf-2020">ACM SIGKDD 2020 Workshop on Machine Learning in Finance</a> with Nitesh Chawla,
+        Tanveer Faruquie, Senthil Kumar, Saurabh Nagrecha, and Jose A. Rodriguez-Serrano. Submissions <a href="https://cmt3.research.microsoft.com/MLF2020">here</a>, due May 20th!</li>
+    <br>
+    
+    <li> <b>Mar, 2020</b> I will attend the  <a href="https://bit.ly/2QdaYmS">Amazon Scholar &amp; Faculty Summit Fall 2020</a>.</li>
+    <br>
+    
+    
+    
+       
+    
+     <li> <b>Dec, 2019</b> Our work on <a href="pubs.html">tackling oversmoothing in graph neural networks via a novel normalization scheme</a> to appear at <a href="https://iclr.cc/">ICLR 2020</a>!</li>
+    <br>
+    
+    
+    <li> <b>Sep, 2019</b>  Awarded an <a href="http://www.adobe.com/careers/university/marketing-research.html">Adobe University Marketing Research</a> Grant for our project titled
+        <i>Entity Resolution and User De-duplication of Recurring Fraudsters and Free-loaders</i>. Thanks Adobe!</li>
+    <br>
+
+    
+    <li> <b>Sep, 2019</b> Our work investigating <a href="pubs.html">nearest neighbor methods for anomaly detection</a> to appear at <a href="https://nips.cc/Conferences/2019/">NeurIPS 2019</a>!</li>
+    <br>
+    
+    <li> <b>Sep, 2019</b> I am giving an invited talk (highlighting the applications of my research on anomaly mining to fraud detection) at the <a href="https://www.re-work.co/events/ai-in-finance-summit-new-york-2019">AI in Finance Summit</a> in NYC. See the agenda <a href="https://s3.amazonaws.com/re-work-production/schedule_pdfs/194/original.pdf?1565785961">here</a>.</li>
+    <br>
+    
+    <li> <b>July, 2019</b> I am officially promoted to Associate Professor! Thanks to all the students, post-docs, collaborators, letter writers, and role models who helped make this happen :-)</li>
+    <br>
+	
+	<li> <b>June, 2019</b> Our work on <a href="pubs.html">continual rare class classification</a> to appear at <a href="http://ecmlpkdd2019.org/">ECML PKDD 2019</a>!</li>
+    <br>
+
+
+
+	 <li> <b>May, 2019</b> I am visiting and giving talks at Amazon Inc. at Palo Alto and the <a href="http://rain.stanford.edu/">Stanford RAIN Seminar</a>.</li>
+    <br>
+    
+    <li> <b>Apr, 2019</b> I am honored to receive the prestigious title "Heinz College Dean's Professorship" for the next 3 years!</li>
+    <br>
+    
+    <li> <b>Apr, 2019</b> Our work on <a href="pubs.html">human-in-the-loop interactive anomaly detection</a> received the Best Research Paper Award at <a href="https://www.siam.org/conferences/CM/Main/sdm19">SIAM SDM'19</a>!!!</li>
+    <br>
+    
+    
+    <li> <b>Mar, 2019</b> I am co-organizing the <a href="https://sites.google.com/view/kdd-adf-2019">2nd Workshop on Anomaly Detection in Finance</a> at ACM SIGKDD 2019. Submit your related work by May 12!</li>
+    <br>
+    
+    <li> <b>Feb, 2019</b> I am one of the <a href="https://www.nae.edu/Projects/31202.aspx">Gilbreth Lecturers</a> at the upcoming <a href="https://www.nae.edu/Events/RegionalMeetings/196401.aspx">National Academy of Engineering's National Meeting</a>! I will give a talk titled "Anomaly Mining: Detection and Beyond" to 100-200 middle and high school students in addition to the 40-50 NAE members in attendance. Here is a <a href="images/AkogluNAE.JPG">photo</a> :-)
+    </li>
+    <br>
+    
+    <li> <b>Jan, 2019</b> Our work on <a href="pubs.html">contrastive and visual topic modeling</a> to appear at <a href="https://www2019.thewebconf.org/">TheWebConf'19</a> as a full paper!</li>
+    <br>
+    
+    
+    <li> <b>Dec, 2018</b> Our work on <a href="pubs.html">human-in-the-loop interactive anomaly detection</a> to appear at <a href="https://www.siam.org/conferences/CM/Main/sdm19">SIAM SDM'19</a>!</li>
+    <br>
+
+
+    
+    <li> <b>Nov-Dec, 2018</b> I am visiting Singapore Management University for a collaborative project on early event detection using large-scale mobility data (bus, metro, autoparks, and social media).</li>
+    <br>
+    
+    <li> <b>September, 2018</b> <a href="http://www.andrew.cmu.edu/user/shubhras/spi/">Our paper</a>  is awarded the <b>Best Student Machine Learning Paper Runner-up</b> at ECML PKDD 2018! The main scope of the work is to show why and how one could leverage privileged information for anomaly detection.</li>
+    <br>
+
+    
+    
+    
+    
+    <li> <b>August, 2018</b> 2 conference papers on <a href="pubs.html">graph learning for semi-supervised classification</a> and <a href="pubs.html">change point detection and localization on a graph</a> accepted to appear at <a href="http://www.cikm2018.units.it/">ACM CIKM'18</a>!</li>
+    <br>
+    
+    
+    <li> <b>July, 2018</b> Our work on <a href="pubs.html">analyzing employee peer-reviews</a> to appear at <a href="http://asonam.cpsc.ucalgary.ca/2018/">ACM/IEEE ASONAM'18</a> Industry Track!</li>
+    <br>
+    
+    <li> <b>June, 2018</b> 3 conference papers on <a href="pubs.html">anomaly detection and explanation</a> accepted to appear at <a href="http://www.ecmlpkdd2018.org/">ECML PKDD'18</a>!</li>
+    <br>
+
+    
+    <li> <b>June, 2018</b> Our work on <a href="pubs.html">explaining anomalous patterns</a> to appear at <a href="http://www.ecmlpkdd2018.org/">ECML PKDD'18</a> Journal Track!</li>
+    <br>
+    
+    
+    <li> <b>June, 2018</b> Upcoming talks and travel:</li>
+    <ul style="line-height:125%">
+       
+        <li>June 11: Talk titled <i>A Quest for Structure: Joint Graph Structure and Semi-Supervised Inference</i> &nbsp; [<a href="docs/18-NetSci-sinm-glearnssl.pdf">slides</a>]  at <br><a href="http://danlarremore.com/sinm2018/">NetSci 2018 Satellite on Statistical Inference of Network Models</a> (Paris, France)</li>
+        <li>June 12: Talk titled <i>Attributed Networks: Social Circles, Summarization, Comparison</i> &nbsp; [<a href="docs/18-NetSci-mlns-attributed.pdf">slides</a>] at <br><a href="https://mlns18.tumblr.com/">NetSci 2018 Satellite on Machine Learning In Network Science</a> (Paris, France)</li>
+        <li>June 18-20: Talk and poster titled <i>Anomaly Mining: Detection and Beyond</i> at <br>2018 <a href="https://www.naefrontiers.org/Symposia/JAFOE/32546/54413.aspx">Japan-American Frontiers of Engineering Symposium</a> (Tsukuba, Japan)</li>
+    </ul>
+   
+    
+    <li> <b>May, 2018</b> Our work on <a href="pubs.html">outlier detection in feature-evolving data streams</a> to appear in <a href="http://www.kdd.org/kdd2018/">ACM SIGKDD'18</a>!</li>
+    <br>
+    
+    <li> <b>Mar, 2018</b> I am co-organizing the 5th ACM SIGKDD 2018 Workshop <a href="odd/index.html">ODD v5.0: Outlier Detection De-constructed</a>, <br> with Evgeny Burnaev (Skolkovo IST), Charu Aggarwal (IBM), Christos Faloutsos (CMU). <br><font color="red">Submit your ODD work by May 15th!</font> </li>
+    <br>
+
+    <li> <b>Feb, 2018</b> Our work on <a href="pubs.html">graph-based semi-supervised learning in noisy multi-graphs</a> to appear in <a href="http://prada-research.net/pakdd18/">PAKDD'18</a>.</li>
+    <br>
+    
+    
+    <li> <b>Feb 9, 2018</b> Two talks at ACM WSDM: "Mining Rich Graphs: Ranking, Classification, and Anomaly Detection" at <a href="http://heteronam.org/2018/">International Workshop on Heterogeneous Networks Analysis</a>, and "Opinion Spam Detection: A Story of Networks, Meta-data and an Oracle" at <a href="http://snap.stanford.edu/mis2/">MIS2: Workshop on Misinformation and Misbehavior Mining on the Web</a>.
+ </li>
+    <br>
+    
+
+
+    <li> <b>Jan, 2018</b> Our work on <a href="pubs.html">attributed graphs: discovering communities and anomalies, interactive visual exploration and summarization</a> appeared in <a href="http://tkdd.acm.org/">Transactions on Knowledge Discovery from Data (TKDD)</a> Journal, Volume 12, Issue 2.</li>
+    <br>
+    
+        
+    <li> <b>Nov, 2017</b> Talk at IEEE ICDM Workshop on High Performance Graph Data Mining and Machine Learning; <i>Online Detection of Anomalous Heterogeneous Graphs with Streaming Edges</i></li>
+    <br>
+    
+    <li> <b>Oct, 2017</b> Talk at UT Southwestern Medical Center CSB (Computational and Systems Biology) Seminar; <i>autOmated Data Description (ODD): Explaining Anomalies for Human Interpretation</i></li>
+    <br>
+    
+    <li> <b>Oct, 2017</b> Talk at UT Austin McCombs School of Business Information Management Seminar; <i>Temporal Prediction of  Customer Purchases and Using Forecasts in Coupon Design</i></li>
+    <br>
+    
+    <li> <b>Sep, 2017</b> Talk at University of Pittsburgh Big Data Science Colloquium; <i>Discovering Communities and Anomalies in Attributed Graphs: Interactive Visual Exploration and Summarization</i></li>
+    <br>
+    
+    <li> <b>Aug, 2017</b> Talk at the ACM KDD Interactive Data Exploration and Analytics (IDEA) Workshop</li>
+    <br>
+
+
+
+    <li> <b>May, 2017</b> Our paper on <a href="pubs.html">promoting targeted time-limited digital coupons via purchase forecasts</a> will appear at the Applied Data Science Track at <a href="http://www.kdd.org/kdd2017/">ACM SIGKDD</a>'17.</li>
+    <br>
+    
+    <li> <b>Mar, 2017</b>  Awarded an <a href="http://www.adobe.com/careers/university/marketing-research.html">Adobe University Marketing Research</a> Grant for our project titled
+        <i>Real-time Detection of Online Click and Display Ad Exchange Fraud</i>. Thanks Adobe!</li>
+    <br>
+
+    
+    <li> Talk at the <a href="https://sites.google.com/site/workshopwinds2017/">Women in Data Science (WinDS) Workshop</a> at SIAM SDM, April 2017</li>
+    <br>
+
+    <li> <b>Jan, 2017</b> Our paper on <a href="pubs.html">spam URL detection</a> to appear at <a href="http://pakdd2017.snu.ac.kr/" target="_blank">PAKDD'17</a> and another work on <a href="pubs.html">explaining class differences via attributes</a> to appear at <a href="http://www.www2017.com.au/" target="_blank">WWW'17</a> Web Science Track.</li>
+    <br>
+    
+    
+    <li> <b>Dec, 2016</b> Our work on <a href="pubs.html">Ranking in Heterogeneous Networks with Geo-Location Information</a> will appear at <a href="http://www.siam.org/meetings/sdm17/" target="_blank">SIAM SDM</a>'17.</li>
+     <br>
+     
+     
+    <li> <b>Sep, 2016</b> We are building <a href="http://odds.cs.stonybrook.edu/" target="_blank">ODDS</a> (Outlier Detection Data Sets) -- an online data repository! Stay tuned for updates! </li>
+    <br>
+    
+    
+    <li> <b>Sep, 2016</b> 1 (short) paper <a href="pubs.html">Sequential Ensemble Learning for Outlier Detection: A Bias-Variance Perspective</a> is accepted to <a href="http://icdm2016.eurecat.org/">ICDM</a>'16.</li>
+    <br>
+    
+    
+    <li> <b>Sep, 2016</b> Our <a href="http://link.springer.com/article/10.1007/s10618-015-0447-5?wt_mc=Internal.Event.1.SEM.ArticleAuthorAssignedToIssue">DAMI article</a> on a general framework for optimizing network robustness by edge rewiring is published in Volume 30, Issue 5.
+        </li>
+<br>
+
+    
+    <li> <b>Aug, 2016</b> I moved to CMU's
+        <a href="http://www.heinz.cmu.edu/" target="_blank">Heinz College</a>, where I will focus on data mining for societal
+        problems through big data and computational methods. I am looking for students (PhD and MS)!</li>
+  <br>
+    
+    <li> <b>July, 2016</b> Talk on anomaly mining at the US Army Research Labs.</li>
+ <br>
+    <li> <b>June, 2016</b> Talk on anomaly mining at the 2016 <a href="https://sites.google.com/site/icmlworkshoponanomalydetection/">ICML Workshop on Anomaly Detection</a>.</li>
+ <br>
+    <li> <b>June, 2016</b> Talk on opinion spam detection at <a href="http://www.flipkart.com/">Flipkart Inc.</a> and <a href="http://www.amazon.in/">Amazon India</a>.</li>
+  <br>
+    <li> <b>May, 2016</b> 1 paper <a href="pubs.html">Fast Memory-Efficient Anomaly Detection in Streaming Heterogeneous Graphs</a> at <a href="http://www.kdd.org/kdd2016/">ACM SIGKDD</a>'16.</li>
+ <br>
+    
+    <li> <b>May, 2016</b> Won SIAM SDM 2016 <font color="red">Best Paper Runner-up</font> award for joint work with Bryan Perozzi on <a href="pubs/16-sdm-amen.pdf"> scalable ranking of anomalies in attributed graphs</a>!</li>
+  <br>  
+    <li> <b>Apr, 2016</b> Keynote speaker at the <a href="http://www.mlgworkshop.org/2016/">12th International Workshop on Mining and Learning with Graphs (MLG)</a> (co-located with KDD) on Aug 14th in San Francisco.</li>
+    
+    <li> <b>Apr, 2016</b> Invited to serve as Workshops Co-Chair of ACM SIGKDD 2017.</li>
+    
+    
+   <li> <b>Apr, 2016</b> Invited speaker at the <a href="https://sites.google.com/site/icmlworkshoponanomalydetection/">ICML 2016 Anomaly Detection Workshop</a> on June 24th in NYC.</li>
+    
+    <li> <b>Mar, 2016</b> Keynote speaker at the <a href="http://staff.vbi.vt.edu/maleq/MNG2016/">2016 SDM Workshop on Mining Networks and Graphs</a>: "Fraud Detection with Networks and Beyond" on May 7th in Miami.</li>
+    
+    <li> <b>Mar, 2016</b> <a href="http://outlier-analytics.org/odd16kdd/">ACM SIGKDD 2016 Workshop</a> ODD 4.0: Outlier Definition, Detection, and Description On-Demand, with F. Bell (Uber), E. Muller (HPI Germany), T. Senator (IARPA)</li>
+    
+    
+    
+    <li> <b>Mar, 2016</b> 1 short paper <a href="pubs.html">Temporal Opinion Spam Detection by Multivariate Indicative Signals</a> to appear at <a href="http://www.icwsm.org/2016/">ICWSM</a>'16)</li>
+
+    
+    <li> <b>Feb, 2016</b> Invited to serve as Workshops Co-Chair of SIAM SDM 2017.</li>
+    
+    
+     <li> <b>Feb, 2016</b> Our work on <a href="pubs.html">social security fraud detection</a> with V. Van Vlasselaer, T. Eliassi-Rad, M. Snoeck, and B. Baesens is to appear in the <a href="http://pubsonline.informs.org/journal/mnsc">Management Science</a> Journal.</li>
+    
+    <li> <b>Jan, 2016</b> Invited Associate Editorship for the <a href="http://www.computer.org/web/tkde">IEEE Transactions on Knowledge and Data Engineering</a> (TKDE) Journal.</li>
+    
+    <li> <b>Jan, 2016</b> Invited to the Editorial Board of the <a href="http://link.springer.com/journal/10618">Data Mining and Knowledge Discovery</a> (DMKD) Journal.</li>
+    
+    
+    <li> <b>Jan, 2016</b> Our work on <a href="pubs.html">building anomaly ensembles</a> is to appear in the <a href="http://tkdd.acm.org/">Transactions on Knowledge Discovery from Data</a> (TKDD) Journal.</li>
+  
+  <li> <b>Dec, 2015</b> 3 papers on <a href="pubs.html">attributed graph anomalies and opinion spam</a> at <a href="http://www.siam.org/meetings/sdm16/">SIAM SDM</a>'16.</li>
+  
+  <li> <b>Nov, 2015</b> 1 paper <a href="pubs.html">Optimizing Network Robustness by Edge Rewiring: A General Framework</a> at Data Mining and Knowledge Discovery (DAMI) (To appear at <a href="http://www.ecmlpkdd2016.org/">ECML PKDD</a>'16)</li>
+  
+<li> <b>Nov, 2015</b> <a href="http://kdd.org/kdd2016/">SIGKDD 2016</a> Student Travel Awards Co-chair</li>
+
+<li> <b>Nov, 2015</b> <a href="http://www.ecmlpkdd2016.org">ECML PKDD 2016</a> PhD Forum Co-chair</li>
+   
+<li> <b>Nov, 2015</b> Talk on "3D's of Anomaly Mining" at University of Illinois at Chicago</li>
+
+<li> <b>Nov, 2015</b> Talk on "Semi-supervised Learning with Multi-Graphs" at Tepper School of Business at CMU</li>
+
+   
+   <li> <b>Oct, 2015</b> Talk on "3D's of Anomaly Mining" at KU Leuven</li>
+   
+   <li> <b>Oct, 2015</b> Attending Workshop on Information Networks (WIN) at NYU Business School (1 paper and 1 poster presentation).</li>
+   
+   <li> <b>Sep, 2015</b> Invited speaker at the NII Shonan Meeting on "Analytics on Complex Networks: Scalable Solutions for Empirical Questions" Japan, Feb 2016.</li>
+
+    
+    <li> <b>July, 2015</b> DARPA grant joint with IBM, Northwestern, UIC, and Stony Brook. Thanks DARPA!</li>
+    
+    <li> <b>July, 2015</b> Offering a new course: <a href="courses.html">Data Science Fundamentals</a> this Fall. </li>
+    
+    <li> <b>June, 2015</b> 1 paper <a href="pubs.html">Discovering Opinion Spammer Groups by Network Footprints</a> at <a href="http://www.ecmlpkdd2015.org/">ECML/PKDD</a>'15.</li>
+    
+    <li> <b>May, 2015</b> Received a <b><a href="https://www.cs.stonybrook.edu/about-us/News/Facebook-Funds-Prof-Akoglu%E2%80%99s-Graph-Mining-Research">Facebook Faculty Gift</a></b>. Thanks Facebook!</li>
+    
+    <li> <b>May, 2015</b> 1 paper <a href="pubs.html">Collective Opinion Spam Detection: Bridging Review Networks and Metadata</a> at <a href="http://www.kdd.org/kdd2015/">ACM SIGKDD</a>'15.</li>
+    
+    <li> <b>Apr, 2015</b> <a href="pubs/15-robust-subgraphs.pdf">Best Research Paper</a> at SIAM SDM 2015. Congrats Hau and Shuchu!
+    </li>
+    
+    <li> <b>Apr, 2015</b> <a href="http://www.kdd.org/kdd2015/">KDD 2015</a> tutorial "Graph-Based User Behavior Modeling: From Prediction to Fraud Detection" with Alex
+        Beutel and Christos Faloutsos.
+    </li>
+
+<li> <b>Apr, 2015</b> Co-chairing <a href="http://outlier-analytics.org/odd15kdd/">KDD 2015 Workshop on Outlier Definition, Detection, and Description (ODDx3)</a>. Submit your work!
+</li>
+    
+
+<li> <b>Mar, 2015</b> <b>NSF <a href="http://www.nsf.gov/awardsearch/showAward?AWD_ID=1452425">CAREER</a> award</b> (2015-2020). Thanks NSF! 
+<a href="PROJECTS/ANOMALY_MINING">[Project_page]</a>
+</li>
+
+    
+<li> <b>Feb, 2015</b> 1 paper <a href="pubs.html">Correlation of Node Importance Measures: An Empirical Study through Graph Robustness</a> at <a href="http://www.www2015.it/">WWW</a>'15 (Web Science Track).</li>
+    
+    <li> <b>Jan, 2015</b> Invited talk at <a href="http://www.crm.umontreal.ca/2015/Challenges15/index_e.php">Workshop</a> on Statistical and Computational Challenges in Networks, Web Mining, and Cybersecurity, Montreal, Canada (May 4-8). </li>
+    
+
+<li> <b>Dec, 2014</b> 2 papers <a href="pubs.html">Less is More: Building Selective Anomaly Ensembles</a> and <a href="pubs.html">Where Graph Topology Matters: The Robust Subgraph Problem</a> at <a href="http://www.siam.org/meetings/sdm15/" target="_blank">SIAM SDM</a>'15.</li>
+ 
+ 
+ 
+
+
+<li> <b>Nov, 2014</b> Invited talk at Huawei Technologies R and D, Santa Clara, CA. </li>
+
+<li> <b>June, 2014</b> 1 paper <a href="pubs.html">Guilt-by-Constellation: Fraud Detection by Suspicious Clique Memberships</a> at <a href="http://kholden7.wix.com/hicss">HICSS</a>'15.</li>
+
+<li> <b>Sep, 2014</b> Slides and Software for our SIGKDD 2014 paper is now  <a href="pubs.html">online</a>. </li>
+<li> <b>Sep, 2014</b> New course <a href="courses.html">Data Mining meets Graph Mining</a> this Fall. </li>
+
+    <li> <b>July, 2014</b> Invited talk at <a href="http://www.nicta.com.au/">NICTA</a> Sydney, AU</li>
+
+    <li> <b>July, 2014</b> Best paper award at <a href="http://adc-conferences.org.au/index.html">ADC</a>'14.</li>
+
+    <li> <b>June, 2014</b> 1 paper <a href="pubs.html">Fast Nearest Neighbor Search on Large Time-Evolving Graphs</a> at <a href="http://www.ecmlpkdd2014.org/">ECML/PKDD</a>'14.</li>
+
+     <li> <b>June, 2014</b> 2 papers <a href="pubs.html">Watch Your Tags: Analysis of Question Response Time in StackOverflow</a> and <a href="pubs.html">Joint Voting Prediction for Questions and Answers in CQA</a> at <a href="http://www.asonam2014.org/">IEEE/ACM ASONAM</a>'14.</li>
+
+    <li> <b>May, 2014</b> 1 paper <a href="pubs.html">Focused Clustering and Outlier Detection in Large Attributed Graphs</a> at <a href="http://www.kdd.org/kdd2014/">ACM SIGKDD</a>'14.</li>
+
+<li><b>April, 2014</b> <a href="pubs.html">DAMI Survey</a> on Graph-based Anomaly Detection</li>
+<li> <b>April, 2014</b><a href="http://outlier-analytics.org/odd14kdd/"> ODD^2 @ KDD2014</a>: Workshop on Outlier Detection and Description under Data Diversity </li>
+
+<li> <b>Mar 20, 2014</b> Attend Facebook Machine Learning Open House, Menlo Park, CA </li>
+<li> <b>Mar 19, 2014</b> Invited talk at Twitter Inc., San Francisco, CA </li>
+
+    <li> <b>Mar 17, 2014</b> Invited talk at University of California, Santa Barbara </li>
+    <li> <b>Mar, 2014</b> 1 (full) paper <a href="pubs.html">Quantifying Political Polarity based on Bipartite Opinion Networks</a> is accepted to <a href="http://www.icwsm.org/2014/index.php">ICWSM</a>'14.</li>
+    <li> <b>Mar, 2014</b> 1 (full) paper <a href="pubs.html">ConnotationWordNet: Learning Connotation of the
+        Word+Sense Network</a> at <a href="http://www.cs.jhu.edu/ACL2014/">ACL</a>'14 for presentation.</li>
+
+<li> <b>Feb, 2014</b> SDM Early Career Travel Grant, thanks SIAM! </li>
+<li><b>Jan, 2014</b> 1 paper <a href="pubs.html">User Churn in Focused Q&amp;A Sites: Characterizations and Prediction</a> is accepted to <a href="http://www2014.kr/">WWW'14</a> WebSci for presentation.</li>
+
+<li> 1 (full) paper <a href="pubs.html">Make It or Break It: Manipulating Robustness in Large Networks</a> is accepted to <a href="http://www.siam.org/meetings/sdm14/">SIAM SDM</a>'14.</li>
+
+
+</li><li><b>Apr 7, 2014</b> Full-day <font color="red">Workshop </font> BGM @ WWW 2014 on <a href="http://poloclub.gatech.edu/bgm2014/">Big Graph Mining</a></li>
+
+
+</li>
+<li> 1 (short) paper on <a href="pubs.html">External Evaluation of Topic Models: A Graph Mining Approach</a>
+is accepted to <a href="http://icdm2013.rutgers.edu/">ICDM</a>'13.</li>
+
+ <li>Teaching <a href="courses/14CSE512/index.htm">Machine Learning</a> this Spring! </li>
+
+ <li>1 paper on <a href="pubs.html">Sex Differences in the Human Connectome</a> is accepted to <a href="http://wi-consortium.org/conferences/amtbi13/bhi/index.php">BHI</a>'13.  </li>
+
+<li><FONT COLOR="red">Tutorial </FONT> on <a href="docs/asonam13-tutorial.pdf">Big Graph Mining</a> at this year's ASONAM. <FONT COLOR="red">Slides </FONT>right <a href="http://web.kaist.ac.kr/~ukang/TALKS/13-ASONAM-tutorial/">here</a></li>
+
+<li>Check out my new course <a href="courses.html">Networks and Data Mining Techniques</a> </a> </li>
+
+  </li>
+</ul>
+				</div>
+
+
+
+
+
+
+<h2><a href="research.html">Research</a> interests</h2>
+
+<ul>
+<li>Large-scale graph mining
+</li>
+<li>Anomaly, event, and fraud detection
+</li>
+<li>Statistical data analysis and applied machine learning
+</li>
+<li>Social and information media &amp; network analysis
+</li>
+<li>Recommender systems
+</li>
+</ul>
+
+
+<h2>Selected Honors and Awards</h2>
+<ul>
+<li> <b>Heinz College Dean's Professor</b> for Feb 2019-2022</li>
+<li> <b>Best Research Paper</b> Award, SIAM SDM 2019 </li>
+<li> <b>Best Student Machine Learning Paper Runner-up</b> Award, ECML PKDD 2018 </li>
+<li> <b>NSF CAREER</b> Award, 2015-2020 </li>
+<li> <b>Best Research Paper Runner-up</b> Award, SIAM SDM 2016 </li>
+<li> <b>Best Research Paper</b> Award, SIAM SDM 2015 </li>
+<li> <b>Army Research Office Young Investigator</b> Award, 2013 </li>
+<li> <b>Best Paper</b> Award, PAKDD 2010 </li>
+<li> <b>Best Knowledge Discovery Paper</b> Award, ECML PKDD 2009 </li>
+</ul>
+
+<!--
+<h2>Background</h2>
+<p>
+I got my <a href="thesis/thesis.html">Ph.D.</a> from the <a href="http://www.cs.cmu.edu" target="_blank">Computer Science Department (CSD)</a> at
+<a href="http://www.cmu.edu" target="_blank"> Carnegie Mellon University </a> in Aug. 2012 (I defended <a href="thesis/thesis.html">this</a>).
+I was extremely fortunate to have Prof. <a href="http://www.cs.cmu.edu/%7Echristos/">Christos Faloutsos</a>
+as my Ph.D. advisor.
+During my doctoral studies, I also worked at IBM T. J. Watson Research
+Labs (two summers) and Microsoft Research at Redmond (one summer).
+<br>
+I hold a B.S. in Computer Science from <a href="http://www.bilkent.edu.tr/index.html" target="_blank"> Bilkent University</a>, where
+I was fortunate to be advised by Prof. <a href="http://www.cs.bilkent.edu.tr/%7Eoulusoy/" target="_blank">Ozgur Ulusoy</a>.
+</p>
+-->
+
+
+</tbody>
+</table>
+ </td>
+<td align="right" style="border:none;"><br>
+<div id="clustrmaps-widget" align="right"></div>
+<script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?u=8RK1&d=M18y6iwdvvPqa_x8IpRLmqJpGFk2ykOnXEPlF9VGpvo"></script>
+</td>
+</tr></tbody></table>
+
+<br>
+
+</div></div></div></body></html>
